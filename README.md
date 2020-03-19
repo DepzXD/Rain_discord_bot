@@ -1,1 +1,1 @@
-# Rain_discord_bot
+# Rain
