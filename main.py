@@ -37,8 +37,8 @@ async def on_user_update(before, after):
   id = client.get_guild(int(os.getenv('SERVER_ID')))
   for channel in id.channels:
     if str(channel) == "🛸bot-spam":
-      embed = discord.Embed(title=f"{after}")
-      # embed.set_thumbnail(url=member.avatar_url)
+      embed = discord.Embed(title=f"{after}", description=f"{after.mention}Updated Profile!", color=0xeca427)
+      embed.set_thumbnail(url=after.avatar_url)
       embed.add_field(name="before", value=before)
       embed.add_field(name="after", value=after)
       await channel.send(content=None, embed=embed)
@@ -47,6 +47,8 @@ async def on_user_update(before, after):
 @client.event
 async def on_message(message):
   id = client.get_guild(int(os.getenv('SERVER_ID')))
+  author = os.getenv('AUTHOR_ID')
+  admin = client.get_user(int(author))
   hellos = ["hello", "Hello", "Hey", "hey", "Hi", "hi"]
 
   if (message.guild is None):
@@ -54,9 +56,26 @@ async def on_message(message):
       if str(channel.name) == "soluctions" and "#soluction id:" in str(message.content):
         await channel.send(f"{message.content}")
 
-  if str(message.channel):
+    # ADMIN sec
+    if str(message.author.id) == str(author):
+      if message.content.split(', ')[0] == "sendMSG":
+        try:
+          authorID = int(message.content.split(', ')[1])
+          msg = message.content.split(', ')[2]
+          user = client.get_user(int(authorID))
+          await user.send(msg)            
+        except:
+          print('LOL!')
+    # USER sec
+    elif message.content.split(', ')[0] == "send":
+      try:
+        msg = message.content.split(', ')[1]
+        await admin.send(msg)
+      except:
+        print('LOL!')
+  elif str(message.channel):
     if message.content.split(' ', 1)[0] in hellos:
       # Todo: pass random messages 
       await message.channel.send(f"👋 Hi {message.author.mention}")
-
+  
 client.run(token)
