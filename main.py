@@ -9,6 +9,8 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
+  activity = discord.Activity(name="something!! IDK, i'm anime girl", type=discord.ActivityType.listening)
+  await client.change_presence(activity=activity)
   print('Rain is ready for battle!!')
 
 # welcomes new users s
