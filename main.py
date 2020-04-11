@@ -1,17 +1,31 @@
 from dotenv import load_dotenv
 import discord
 import os
+import random
+import schedule 
+import time
 
 load_dotenv()
 
 token = os.getenv('TOKEN')
 client = discord.Client()
 
+async def schedule_for_progress():
+  channelID = int(os.getenv('SCHEDULE_CHANNEL'))
+  daily = ["@everyone showoff what you've learned or learning #100-days-of-code", "@everyone it's a new day #100-days-of-code!!", "@everyone #100-days-of-code", "@everyone 👉 #100-days-of-code", "100-days-of-code @everyone 🤗", "100-days-of-code @everyone 🤬"]
+  await channelID.send(random.choice(daily))
+  
+  
+
 @client.event
 async def on_ready():
+  print('Rain is ready for battle!!')
   activity = discord.Activity(name="something!! IDK, i'm anime girl", type=discord.ActivityType.listening)
   await client.change_presence(activity=activity)
-  print('Rain is ready for battle!!')
+  # schedule time
+  schedule.every().day.at('08:35').do(schedule_for_progress)
+
+
 
 # welcomes new users s
 @client.event
@@ -67,14 +81,31 @@ async def on_message(message):
           user = client.get_user(int(authorID))
           await user.send(msg)            
         except:
-          print('LOL!')
+          print('(ADMIN)LOG: ', message.content)
+          await message.author.send("didn't geddt, Try again")
+      elif message.content.split(', ')[0] == "announce":
+        try:
+          async with channel.typing():
+            await time.sleep(3)
+            channelID = int(message.content.split(', ')[1])
+            msg = message.content.split(', ')[2]
+            channel = client.get_channel(channelID)
+            await channel.send(msg)            
+        except:
+          print('(ADMIN)LOG: ', message.content)
+          await message.author.send("didn't geddt, Try again")
+        
     # USER sec
     elif message.content.split(', ')[0] == "send":
       try:
         msg = message.content.split(', ')[1]
         await admin.send(msg)
       except:
-        print('LOL!')
+        async with channel.typing():
+          await time.sleep(3)
+          print('(user)Log: ', message.content)
+          await message.author.send("didn't geddt, Try again")
+
   elif str(message.channel):
     if message.content.split(' ', 1)[0] in hellos:
       # Todo: pass random messages 
