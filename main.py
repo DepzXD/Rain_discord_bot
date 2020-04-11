@@ -82,12 +82,10 @@ async def on_message(message):
           await message.author.send("didn't geddt, Try again")
       elif message.content.split(', ')[0] == "announce":
         try:
-          async with channel.typing():
-            await time.sleep(3)
-            channelID = int(message.content.split(', ')[1])
-            msg = message.content.split(', ')[2]
-            channel = client.get_channel(channelID)
-            await channel.send(msg)            
+          channelID = int(message.content.split(', ')[1])
+          msg = message.content.split(', ')[2]
+          channel = client.get_channel(channelID)
+          await channel.send(msg)            
         except:
           print('(ADMIN)LOG: ', message.content)
           await message.author.send("didn't geddt, Try again")
@@ -100,10 +98,8 @@ async def on_message(message):
         msg = message.content.split(', ')[1]
         await admin.send(msg)
       except:
-        async with channel.typing():
-          await time.sleep(3)
-          print('(user)Log: ', message.content)
-          await message.author.send("didn't geddt, Try again")
+        print('(user)Log: ', message.content)
+        await message.author.send("didn't geddt, Try again")
 
   elif str(message.channel):
     if message.content.split(' ', 1)[0] in hellos:
