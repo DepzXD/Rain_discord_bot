@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 import discord
 import os
 import random
-import schedule 
 import time
 
 load_dotenv()
