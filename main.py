@@ -12,8 +12,9 @@ client = discord.Client()
 
 async def schedule_for_progress():
   channelID = int(os.getenv('SCHEDULE_CHANNEL'))
+  channel = client.get_channel(channelID)
   daily = ["@everyone showoff what you've learned or learning #100-days-of-code", "@everyone it's a new day #100-days-of-code!!", "@everyone #100-days-of-code", "@everyone 👉 #100-days-of-code", "100-days-of-code @everyone 🤗", "100-days-of-code @everyone 🤬"]
-  await channelID.send(random.choice(daily))
+  await channel.send(random.choice(daily))
   
   
 
@@ -22,9 +23,6 @@ async def on_ready():
   print('Rain is ready for battle!!')
   activity = discord.Activity(name="something!! IDK, i'm anime girl", type=discord.ActivityType.listening)
   await client.change_presence(activity=activity)
-  # schedule time
-  schedule.every().day.at('08:35').do(schedule_for_progress)
-
 
 
 # welcomes new users s
@@ -94,6 +92,8 @@ async def on_message(message):
         except:
           print('(ADMIN)LOG: ', message.content)
           await message.author.send("didn't geddt, Try again")
+      elif str(message.content) == "codey":
+        await schedule_for_progress()
         
     # USER sec
     elif message.content.split(', ')[0] == "send":
