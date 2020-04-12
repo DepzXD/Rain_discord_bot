@@ -96,7 +96,7 @@ async def on_message(message):
     elif message.content.split(', ')[0] == "send":
       try:
         msg = message.content.split(', ')[1]
-        await admin.send(msg)
+        await admin.send('user : ', message.author,'msg: ', msg)
       except:
         print('(user)Log: ', message.content)
         await message.author.send("didn't geddt, Try again")
@@ -104,6 +104,6 @@ async def on_message(message):
   elif str(message.channel):
     if message.content.split(' ', 1)[0] in hellos:
       # Todo: pass random messages 
-      await message.channel.send(f"👋 Hi {message.author.mention}")
+      await message.channel.send(f"👋 {random.choice(hellos)} {message.author.mention}")
   
 client.run(token)
